@@ -8,21 +8,23 @@ RUN apt update && \
     apt install -y texlive-full lmodern libbz2-dev nano && \
     apt clean
 
-RUN conda install -y -c conda-forge \
-    r-dt \
-    r-fivethirtyeight \
-    r-kableextra \
-    r-ggally \
-    r-learnr \
-    r-mosaic \
-    r-mosaiccore \
-    r-mosaicdata \
-    r-network \
-    r-palmerpenguins \
-    r-skimr \ 
-    r::r-cherryblossom \
-    r::r-lock5data \
-    r::r-openintro 
+RUN mamba install -y -c conda-forge -c r \
+    r-dt\
+    r-fivethirtyeight\
+    r-kableextra\
+    r-ggally\
+    r-learnr\
+    r-mosaic\
+    r-mosaiccore\
+    r-mosaicdata\
+    r-network\
+    r-palmerpenguins\
+    r-skimr\ 
+    r::r-cherryblossom\
+    r::r-lock5data\
+    r::r-openintro &&\
+    mamba clean -afy &&\
+    /usr/local/bin/fix-permissions "${CONDA_DIR}" || true
     
 RUN R -e "install.packages(c('tutorial.helpers'), repos = 'https://cloud.r-project.org/', Ncpus = parallel::detectCores())"
 RUN R -e 'devtools::install_github("hadley/emo")'
